@@ -28,7 +28,6 @@ public class Issue {
     @Column(length=10000)
     String issue;
     Date date;
-    Date resolvedDate;
     
     int isResolved=0;
 

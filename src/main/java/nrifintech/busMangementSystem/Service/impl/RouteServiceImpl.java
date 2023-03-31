@@ -184,8 +184,6 @@ public class RouteServiceImpl implements RouteService{
 		//find common of both (return R2)
 		List<Integer> commonroutes = new ArrayList<>(routes1);
 		commonroutes.retainAll(routes2);
-		
-//		System.out.println(com);
 		System.out.println(commonroutes);
 		//check if destination_index of source in R2 < destination_index of destination in R2
 		List<Route> result = new ArrayList<>();
@@ -198,8 +196,7 @@ public class RouteServiceImpl implements RouteService{
 				//find routeObject from routeMap where route_id = route_id and destination_id = source
 				System.out.println();
 				if(routeMapRepo.getByRouteIdAndDestinationId(route_id, source).get().getDestination_index()<routeMapRepo.getByRouteIdAndDestinationId(route_id, destination).get().getDestination_index())
-					System.out.println("error genera rote id "+route_id);
-					result.add(this.getRoute(route_id));		
+					result.add(routeRepo.findById(route_id).get());		
 			}
 		}
 	    return  result;	

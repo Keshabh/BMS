@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./home.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
+    />
+    <script src="https://kit.fontawesome.com/c01e8f4e5e.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+
+    <title>Document</title>
+    <script type="text/javascript" language="javascript">
+        function getTokenCookie() {
+            const cookieName = "token=";
+            const cookies = document.cookie.split("; ");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        console.log(getTokenCookie());
+        $.ajax({
+            url: "http://localhost:8080/api/v1/user/get/",
+            type: "GET",
+            headers: {
+                "Authorization": getTokenCookie(),
+                "Content-Type": "application/json"
+            },
+            error: function () {
+                //alert("wrong cookie")
+                window.location.replace("user_login.html");
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="alert-container"></div>
+    <div class="main">
+        <!-- Header -->
+        <div class="header">
+
+           <div class="header-div">
+                <a href="index.html" class="nrifintech">
+                    <div> NRI TRAVEL</div>
+                </a>
+            </div>
+            <div class="header-end">
+
+                <div class="header-end-items">
+                    <img class="vector-icon" alt="" src="public/abstract-user-flat-4.svg" style="height: 25px; margin: auto;margin-right: 10px;" onclick="window.location.href='/client/my_profile.html';"/>
+                    <p class="header-end-items-text"> 
+                        <a href="my_profile.html" class="profile">  My Profile  </a>
+                    </p>     
+                </div>
+
+                        <div class="header-end-items">
+                            <img class="vector-icon" alt="" src="public/vector2.svg" onclick="window.location.href='/client/my_bookings.html';"/>
+                            <p class="header-end-items-text"> 
+                                <a href="my_bookings.html" class="booking">  Booking  </a>
+                            </p>     
+                        </div>
+
+                        <div class="header-end-items">
+                                <img class="vector-icon" alt="" src="public/vector1.svg" onclick="logOut()"/>
+                                <p class="header-end-items-text"> 
+                                     <a href="#" onclick="logOut()" class="logout"> Logout  </a>  
+                                </p>
+                        </div>
+                
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="body-part">
+            
+                    <div>
+
+                        <!--
+
+                            Write your body code within this div
+
+                            Remove the Lorem text to add your code
+                            
+                             -->
+
+                             <div class="body-part-maindiv">
+
+                                <!-- <form action="">
+                                    <div  class="from-to-searchbar">
+                                        <table class="bottom-table">
+                                            <tr>
+                                                <td>
+                                                    <div class="from-to-search-text">  <label for="user-from">From</label> </div>
+                                                            <div class="options"> 
+                                                                <select name="" id="user-from" class="from-id" onclick=" displayDestinations(event)">
+                                                                <option value = "-1">None</option>
+                                                                </select>
+                                                            </div>
+                                                        
+                                                </td>
+                                            
+                                                <td>
+                                                    <div class="from-to-search-text">   <label for="user-to"> TO </label>  </div>
+                                                    
+                                            
+                                                        
+                                                            <div class="options"> 
+                                                                <select name="" id="user-to" class="to-id"  onclick=" displayDestinations1(event)">
+                                                                    <option value = "-1">None</option>
+                                                                </select>
+                                                            </div>
+                                                    
+                                                </td>
+
+                                        
+                                            <td>
+                                        <div style="padding-bottom: 10px;">
+                                                <div class="from-to-search-text" style="margin-bottom: 10px;">   <label for="datepicker"> DATE </label>  </div>
+                                       <input type="text" id="datepicker" readonly></div>
+                                      
+                                        </td>
+                                        <td>
+                                                    <button type="submit" class="from-to-search-text search search-btn" onclick="getRoutes(event)">Search
+                                                    </button>
+                                        </td>
+                                            </tr>
+                                        </table>
+                                        
+                                            
+                                            
+
+                                        
+                                        
+
+                                    </div>
+                                </form> -->
+                                <div class = "index_home_img">
+                                    <img src = "./public/home_photo.svg" class = "index_home_photo">
+                                </div>
+                                    <div class = "index_no_data" style = "text-align: center; color: #334756; margin-bottom:10px;font-size:40px;font-family: 'Josefin Sans', sans-serif;">
+                                       NRI Fintech <p style = "display: inline; color: orangered;">cares for you!</p>
+                                    </div>
+                                <div class = "index_form">
+
+                                    <select name="" id="user-from" class="index-from-id" onclick=" displayDestinations(event)">
+                                        <option value = "-1">Source</option>
+                                    </select>
+                                    <select name="" id="user-to" class="index-to-id"  onclick=" displayDestinations1(event)">
+                                        <option value = "-1">Destination</option>
+                                    </select>
+                                    <input type="text" id="datepicker" readonly placeholder="Date">
+                                    <button type="submit" class="index_search" onclick="getRoutes(event)">Search
+                                    </button>
+                                </div>
+                                <script>
+                                    $( function() {
+                                        $( "#datepicker" ).datepicker({
+                                                minDate: new Date(),
+                                        });
+                                        $("#datepicker").datepicker("setDate", new Date());
+                                    } );
+                                </script>
+                                <div class="content">
+                                    
+                                    
+                                    <!-- <div class = "index_route_item">
+                                        <div class = "index_source">
+                                            <div class = "index_heading">Bus details</div>
+                                            <div class = "index_bus_number">JH-01-8913</div>
+                                            <div class = "index_bus_name">NRI1</div>
+                                        </div>
+                                        <div class = "index_source">
+                                            <div class = "index_heading">Source</div>
+                                            <div class = "index_value">Shapoorji</div>
+                                            <div class = "index_value">9:00</div>
+                                        </div>
+                                        <div class = "index_source">
+                                            <div class = "index_heading">Destination</div>
+                                            <div class = "index_value">NRI</div>
+                                            <div class = "index_value">10:00</div>
+                                        </div>
+                                        <div class = "index_source">
+                                            <div class = "index_heading">Seats left</div>
+                                            <div class = "index_value">0</div>
+                                           
+                                        </div>
+                                        <div class = "index_source">
+                                            <div class = "index_route">See route</div>
+                                            <div class = "index_book">Book</div>
+                                        </div>
+
+                                    </div> -->
+                                    
+                                </div>
+
+                                <!--Content Div Ends Here-->
+                                        
+
+                            </div>  
+
+                                
+                     </div>
+
+
+        </div>
+            
+           
+                        
+            
+
+        <!-- Footer -->
+        <div class="footer">
+
+            <div class="footer-element">
+                NRI includes a copyright notice that reserves all rights for itself,
+                and has protected material
+            </div>
+            <div class="footer-element-smallerscreen" >
+                All rights reserved by NRI
+            </div>
+        </div>
+    
+    </div>
+
+    
+    <!-- 
+        *****   OverLays   ****** 
+    -->
+
+    <!-- Cancel Overlay -->
+
+    <div class="booking-cancel-overlay" onclick="offbooking()">
+        <div class="cancel-div">
+            
+            <div class="cancel-overlay-main-div">
+
+                <div class="cancel-text">Are you sure you want to cancel your booking ?</div>
+                <div class="confirm-cancel-buttons">
+                    <button type="submit" class="confirm-button" ></button> <img class="confirm-cancel-icon" src="./public/confirm-icon.svg" alt=""> Confirm</button>
+                    <button type="submit" class="cancel-button"> <img class="confirm-cancel-icon" src="./public/cancel-icon.svg" alt=""> Cancel</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Cancel Overlay Ends Here-->
+
+
+    <div class="home-route-overlay" onclick="homeoffroute()">
+        <div class="route-div"> 
+            <div class="route-overlay-main-div ">
+
+                <!-- Cross div -->
+                <div class="route-overlay-crossdiv">
+                    <img class="route-cross-icon" src="./public/route-overlay-cancel-icon.svg" alt="">
+                </div>
+                <div id="route-container"></div>
+                <!-- Cross div ends here -->
+    
+
+            </div>
+        </div>
+    </div>
+
+    <!-- OverLays End here -->
+
+    <script src="./index.js">
+    </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./admin_register.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+</head>
+
+<body>
+    <div id="alert-container"></div>
+    <div class="login-main-div">
+
+        <div class="nri-travel-side">
+
+            <img class="walking-svg" alt="" src="public/undraw-walking-outside-re-56xo-1.svg" />
+            <div class="nri-cares-text">
+                <img class="nri-icon" alt="" src="./public/images-1@2x.png" />
+                <div class="cares-text"> cares for your travel ! </div>
+            </div>
+
+        </div>
+
+        <div class="nri-login-side">
+
+            <form class="login-side-div" action="">
+                <div class="login-text">ADMIN REGISTER</div>
+                <div class="login-inputs">
+
+                    <div> <input type="text" placeholder="Name" id="name"> </div>
+                    <div> <input type="text" placeholder="employeeId" id="employeeId"> </div>
+                    <div> <input type="email" placeholder="Email" id="email"></div>
+                    <div>
+                        <input type="password" placeholder="Password" id="mypassword">
+                        <img class="hidden-eye" id="mypassword-icon" src="./public/eye-icon.svg" alt=""
+                            onclick="togglepassword()">
+                    </div>
+                    <div class="submit-div">
+
+                        <a href="#" class="submit-div-register" onclick="console.log('sd')">
+                            <div class="normal-login-text">Register</div>
+                        </a>
+
+                    </div>
+                    <div>
+                        <div class="login-div"> Already have an account ? <a href="./admin_login.html"> Login </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="./index.js">
+
+    </script>
+    <script>
+        function setTokenCookie(token) {
+            const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+            document.cookie = `token=${token}; expires=${expires}; path=/`;
+        }
+        $(".submit-div-register").on("click", function (event) {
+            event.preventDefault();
+            const email = $("#email").val();
+            
+            if(email==undefined || email==""){
+                createAlert("Please fill email", "info");
+                //alert("please fill email")
+                return
+            }
+
+            const password = $("#mypassword").val();
+
+            if(password==undefined || password==""){
+                createAlert("Please fill password!", "info");
+                //alert("please fill password")
+                return
+            }
+
+            const name = $("#name").val();
+
+            if(name==undefined || name==""){
+                //createAlert("Please fill name!", "info");
+                //alert("please fill name")
+                return createAlert("Please fill name!", "info");
+            }
+
+            const employeeId = $("#employeeId").val();
+
+
+            if(employeeId==undefined || employeeId==""){
+                createAlert("Please fill employeeId!", "info");
+                //alert("please fill employeeId")
+                return
+            }
+            
+
+            const data = {
+                name,
+                email,
+                password,
+                employeeId
+            }
+
+            console.log(data)
+            $.ajax({
+                url: "http://localhost:8080/api/v1/user/createAdmin",
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify(data),
+                success: function (data, status) {
+                    window.location.replace("admin_login.html")
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        })
+        
+    </script>
+
+
+<script>
+
+    function createAlert(message, type) {
+    var alertContainer = document.getElementById("alert-container");
+    var alertBox = document.createElement("div");
+    var closeButton = document.createElement("span");
+
+    alertBox.textContent = message;
+    closeButton.textContent = "×";
+    closeButton.className = "closebtn";
+    closeButton.onclick = function() {
+      alertContainer.removeChild(alertBox);
+    };
+
+    alertBox.className = "alert " + type;
+    alertBox.appendChild(closeButton);
+    alertContainer.appendChild(alertBox);
+  }
+</script>
+</script>
+
+</body>
+
+</html>

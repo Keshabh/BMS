@@ -1,0 +1,1540 @@
+<!--
+    @author: Monidepa Ghosh
+    @desc: admin site
+    @file path from root: Ex ./index.html/
+-->
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./admin_homepage.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <title>Admin</title>
+    <script type="text/javascript" language="javascript">
+        function getTokenCookie() {
+            const cookieName = "token=";
+            const cookies = document.cookie.split("; ");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        console.log(getTokenCookie());
+        $.ajax({
+            url: "http://localhost:8080/api/v1/user/get/",
+            type: "GET",
+            headers: {
+                "Authorization": getTokenCookie(),
+                "Content-Type": "application/json"
+            },
+            error: function () {
+                //alert("wrong cookie")
+                window.location.replace("admin_login.html");
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <div id="alert-container"></div>
+    <div class="main">
+        <!-- Header -->
+        <div class="header">
+
+            <div class="header-div">
+                <!-- <<<<<<< HEAD
+                 <a href="index.html" class="nrifintech">
+                     <div> NRI TRAVEL</div>
+                 </a>
+             </div>
+             <div class="header-end">
+ 
+                 
+ 
+                         <div class="header-end-items">
+                                 <img class="vector-icon" alt="" src="public/vector1.svg" />
+                                 <p class="header-end-items-text"> 
+                                      <a href="" class="logout"> Logout  </a>  
+                                 </p>
+                         </div>
+                 
+             </div>
+         </div>
+        
+======= -->
+                <div class="nrifintech"> ${NRI TRAVEL}</div>
+            </div>
+            <div class="header-end">
+
+
+
+
+                <div class="header-end-items">
+                    <img class="vector-icon" alt="" src="public/vector1.svg" />
+                    <p class="header-end-items-text logout"> <a href="#" onclick="logOut()" class="logout">Logout </a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Body -->
+        <div class="body-part">
+
+            <div>
+
+                <!--
+                    Write your body code within this div
+                    
+                    
+                -->
+
+
+                <!--sidebar-->
+
+                <div class="sidebar bar-block collapse card animate-left" id="mySidebar">
+                    <button class="bar-item button large hide-large" onclick="closeSidebar()">Close &times;</button>
+                    <a href="#" class="bar-item button" onclick="firstdiv()" id="text1">Employees</a>
+                    <a href="#" class="bar-item button" onclick="seconddiv()" id="text2">Routes</a>
+                    <a href="#" class="bar-item button" onclick="thirddiv()" id="text3">Bus</a>
+                    <a href="#" class="bar-item button" onclick="fourthdiv()" id="text4">Report</a>
+                    <a href="#" class="bar-item button" onclick="fifthdiv()" id="text5">Destination</a>
+                    <a href="#" class="bar-item button" onclick="sixthdiv(); getUnResolvedIssues();"
+                        id="text6">Issues</a>
+                    <a href="#" class="bar-item button" onclick="seventhdiv()" id="text7">Tickets</a>
+
+                </div>
+
+                <div class="main" style="margin-left:200px;">
+
+                    <div>
+                        <button class="button xlarge hide-large" onclick="openSidebar()">&#9776;</button>
+
+                    </div>
+
+                    <!--first div-->
+
+                    <div id="firstdiv" style="display:block;">
+
+                        <form>
+                            <h1>Add an employee</h1>
+
+                            <input type="text" id="add-employee-name" name="name" placeholder="Name"
+                                autocomplete="new-password">
+
+
+                            <input type="email" id="add-employee-email" name="email" placeholder="Email"
+                                autocomplete="off">
+
+
+                            <input type="password" id="add-employee-password" name="password" placeholder="Password"
+                                autocomplete="new-password">
+
+                            <input type="text" id="add-employee-id" name="empId" placeholder="Employee id"><br>
+                            <input type="submit" value="+ Add Employee" onclick="addEmployee(event)">
+
+                            <h1>Search/edit an employee</h1>
+
+                            <input type="text" id="search-email" placeholder="Enter employee email">
+
+
+
+                        </form>
+
+                        <button class="search-btn" onclick="on()"> <img class="confirm-cancel-icon"
+                                src="./public/icons8-search.svg" alt=""> Search</button>
+                        <script>
+                            function on() {
+
+                                document.querySelector(".search-overlay").style.display = "block";
+                            }
+                        </script>
+                    </div>
+
+                    <!--second div-->
+
+                    <div id="seconddiv" style="display:none;">
+
+
+
+
+
+
+                        <section>
+                            <h1>Add a route</h1><br />
+
+                        </section>
+                        <div class="route_add_div">
+                            <div class="add_route_field" onclick="add_route_field(event)">Add destination</div>
+                            <select class="select_bus" id="select_bus" onclick="displayBusID(event)">
+                                <option>Select your bus</option>
+                            </select>
+                            <div class="add_field" id="add_field">
+
+                            </div>
+                            <div class="route_submit" id="route_submit" onclick=" addRoute(event)"
+                                style="cursor: pointer;">Submit</div>
+
+                        </div>
+                        <section>
+                            <h1>Search a route</h1><br />
+                        </section>
+                        <div class="admin_from_to">
+                            <select class="admin_from" id="admin_from" onclick="displayDestinations3(event)">
+                                <option>Select source</option>
+                            </select>
+                            <select class="admin_to" id="admin_to" onclick="displayDestinations4(event)">
+                                <option>Select destination</option>
+                            </select>
+                            <div class="admin_search_route" style="cursor: pointer;" onclick="getRoutesAdmin(event)">
+                                Search</div>
+                        </div>
+                        <div class="admin_routes"></div>
+
+
+
+                    </div>
+
+                    <!--third div-->
+
+                    <div id="thirddiv" style="display:none;">
+                        <form>
+                            <h1>Add a bus</h1>
+
+                            <input type="text" id="bus-number" name="number" placeholder="Bus Number">
+
+
+                            <input type="number" id="bus-seats" name="seats" placeholder="Total seats">
+
+
+                            <input type="text" id="bus-name" name="name" placeholder="Bus Name"><br>
+
+
+                            <input type="submit" value="+ Add Bus" onclick="addBus(event)">
+
+                            <h1>Search/edit a bus</h1>
+
+                            <input type="text" id="bus-search-name" Bus-number-search" placeholder="Enter bus number">
+
+
+
+                        </form>
+                        <button class="bus-btn" onclick="on2(event)"> <img class="confirm-cancel-icon"
+                                src="./public/icons8-search.svg" alt=""> Search</button>
+                    </div>
+
+                    <!--fourth div-->
+
+                    <div id="fourthdiv" style="display:none;overflow-x: scroll;">
+                        <h1 style="margin-left: 3%;">Analytics and Reports</h1>
+                        <div id="doughnutRow">
+
+                            <div id="doughnutChart">
+                              <canvas id="myChart4" style="width:350;height:350;"></canvas>
+                            </div>
+                            <div id="doughnutChart">
+                                <canvas id="myChart5"  style="width:350;height:350;"></canvas>
+                            </div>
+                            <div id="doughnutChart">
+                                <canvas id="myChart3"  style="width:350;height:350;"></canvas>
+                              </div>
+                          </div>
+                          
+                          
+                          
+
+                        <div id="chart1">
+                            <input type="text" id="report-route-id" placeholder="Enter route id" />
+                            <button onclick="getReportById(event)" class="generate-report">Search</button>
+
+                            <canvas id="myChart">
+
+                            </canvas>
+                        </div>
+
+                        <div id="chart1">
+                            <div>
+                                <canvas id="myChart2"></canvas>
+                            </div>
+                        </div>
+
+                        <script>
+                            var xValues = new Array(31);
+                            var yValues = new Array(31);
+                            var barColors = new Array(31);
+
+                            //Create a chart for demo 
+                            new Chart("myChart", {
+                                type: "bar",
+                                data: {
+                                    labels: xValues,
+                                    datasets: [{
+                                        backgroundColor: barColors,
+                                        data: yValues
+                                    }]
+                                },
+                                options: {
+                                    legend: { display: false },
+                                    title: {
+                                        display: true,
+                                        text: "Usage report for month of march",
+                                        fontSize: 20
+                                    }
+                                }
+                            });
+                            for (let i = 0; i < 31; i++) {
+                                xValues[i] = i + 1;
+                                yValues[i] = 0;
+                            }
+                            var positiveColor = 'rgba(54, 162, 235, 0.2)';
+                            var negativeColor = 'rgba(255, 99, 132, 0.2)';
+
+                            function getReportById(event) {
+                                event.preventDefault();
+                                const id = $("#report-route-id").val();
+                                if (id == "") return createAlert("Please provide a valid route id", "info");//alert("Please provide a valid route id");
+                                $.ajax({
+                                    url: "http://localhost:8080/api/v1/route/getReport/" + id,
+                                    type: "GET",
+                                    headers: {
+                                        "Authorization": getTokenCookie(),
+                                        "Content-Type": "application/json"
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        for (var i = 0; i < data.length; i++) {
+                                            var date = data[i].date;
+                                            var index = parseInt(date.split(':')[0]);
+                                            var diff = data[i].total_seats - data[i].overall_bookings;
+                                            console.log(index, diff);
+                                            index--;
+                                            if (diff >= 0) {
+                                                yValues[index] = diff;
+                                                barColors[index] = negativeColor;
+                                            }
+                                            else {
+                                                //overused
+                                                yValues[index] = -diff;
+                                                barColors[index] = positiveColor;
+                                            }
+                                        }
+                                        console.log(yValues);
+                                        new Chart("myChart", {
+                                            type: "bar",
+                                            data: {
+                                                labels: xValues,
+                                                datasets: [{
+                                                    backgroundColor: barColors,
+                                                    data: yValues
+                                                }]
+                                            },
+                                            options: {
+                                                legend: { display: false },
+                                                title: {
+                                                    display: true,
+                                                    text: "Usage report for month of march",
+                                                    fontSize: 20
+                                                }
+                                            }
+                                        });
+                                    },
+                                    error: function () {
+                                        return createAlert("Server error. Please try again!", "failure");//alert("Server error! Please try again!")
+                                    }
+                                });
+
+                            }
+
+
+                        </script>
+
+                        <script>
+
+                            //fetch the y values from an api.
+                            var benchMark = 0;
+                            var xValues2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var yValues2 = new Array(12);
+
+                            //Create a chart for demo 
+                            new Chart("myChart2", {
+                                type: "line",
+                                data: {
+                                    labels: xValues2,
+                                    datasets: [{
+                                        fill: true,
+                                        lineTension: 0,
+                                        backgroundColor: createGradient(),
+                                        borderColor: "rgba(255, 255, 255, 1.0)",
+                                        borderWidth: 2,
+                                        data: yValues2
+                                    }]
+                                },
+                                options: {
+                                    title: {
+                                        display: true,
+                                        text: 'Active Users Per Month',
+                                        fontSize: 20
+                                    },
+                                    legend: {
+                                        display: false
+                                    },
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                min: 0,
+                                                max: 5,
+                                                stepSize: 1
+                                            },
+                                            scaleLabel: {
+                                                display: true,
+                                                labelString: 'Active Users',
+                                                fontSize: 16
+                                            }
+                                        }],
+                                        xAxes: [{
+                                            scaleLabel: {
+                                                display: true,
+                                                labelString: 'Months',
+                                                fontSize: 16
+                                            }
+                                        }]
+                                    },
+                                    elements: {
+                                        point: {
+                                            radius: 5,
+                                            backgroundColor: 'rgba(255,255,255,1.0)',
+                                            borderColor: 'rgba(255, 255, 255, 1.0)',
+                                            borderWidth: 1
+                                        },
+                                        line: {
+                                            borderColor: 'rgba(255, 255, 255, 0.8)',
+                                            borderWidth: 3
+                                        }
+                                    }
+                                }
+                            });
+
+                            var positiveColor = 'rgba(54, 162, 235, 0.2)';
+                            var negativeColor = 'rgba(255, 99, 132, 0.2)';
+
+                            for (let i = 0; i < 12; i++) {
+                                yValues2[i] = 0;
+                            }
+
+                            $.ajax({
+                                url: "http://localhost:8080/api/v1/report/month-wise-user-usage",
+                                type: "GET",
+                                headers: {
+                                    "Authorization": getTokenCookie(),
+                                    "Content-Type": "application/json"
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                    benchMark = data[0];
+                                    for (var i = 1; i < data.length; i++) {
+                                        yValues2[i - 1] = data[i];
+                                    }
+                                    console.log(yValues2);
+                                    new Chart("myChart2", {
+                                        type: "line",
+                                        data: {
+                                            labels: xValues2,
+                                            datasets: [{
+                                                fill: true,
+                                                lineTension: 0,
+                                                backgroundColor: createGradient(),
+                                                borderColor: "rgba(255, 255, 255, 1.0)",
+                                                borderWidth: 2,
+                                                data: yValues2
+                                            }]
+                                        },
+                                        options: {
+                                            title: {
+                                                display: true,
+                                                text: 'Active Users Per Month',
+                                                fontSize: 20
+                                            },
+                                            legend: {
+                                                display: false
+                                            },
+                                            scales: {
+                                                yAxes: [{
+                                                    ticks: {
+                                                        min: 0,
+                                                        max: benchMark,
+                                                        stepSize: benchMark / 5
+                                                    },
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: 'Active Users',
+                                                        fontSize: 16
+                                                    }
+                                                }],
+                                                xAxes: [{
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: 'Months',
+                                                        fontSize: 16
+                                                    }
+                                                }]
+                                            },
+                                            elements: {
+                                                point: {
+                                                    radius: 5,
+                                                    backgroundColor: 'rgba(255,255,255,1.0)',
+                                                    borderColor: 'rgba(255, 255, 255, 1.0)',
+                                                    borderWidth: 1
+                                                },
+                                                line: {
+                                                    borderColor: 'rgba(255, 255, 255, 0.8)',
+                                                    borderWidth: 3
+                                                }
+                                            }
+                                        }
+                                    });
+                                },
+                                error: function () {
+                                    return createAlert("Server error. Please try again!", "failure");//alert("Server error! Please try again!")
+                                }
+                            });
+
+
+
+
+                            function createGradient() {
+                                var gradient = document.getElementById("myChart2").getContext("2d").createLinearGradient(0, 0, 0, 400);
+                                gradient.addColorStop(0, "rgba(12, 70, 153, 1.0)");
+                                gradient.addColorStop(1, "rgba(12, 70, 153, 0.1)");
+                                return gradient;
+                            }
+                        </script>
+                        <div>
+                            <table style="width: 80%;margin-left: 5%;">
+                              <tr>
+                                <td style="width: 50%;height:100px;text-align: center;">
+                                  <div id="chart3" style="text-align:center;cursor: pointer;color:grey;" onclick="generateReport('user')">
+                                    <img src="http://127.0.0.1:5500/client/public/download-icon.png" alt="" id="download-img-icon">
+                                    <p>Download user status report.</p>
+                                    <p>Contains information about users and their total bookings.</p>
+                                  </div>
+                                </td>
+                                <td style="width: 50%;height: 100px;text-align: center;">
+                                  <div id="chart3" style="text-align:center;cursor: pointer;color: grey;" onclick="generateReport('route')">
+                                    <img src="http://127.0.0.1:5500/client/public/download-icon.png" alt="" id="download-img-icon">
+                                    <p>Download route status report</p>
+                                    <p>Contains information about routes and their underused and overused status.</p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+                    <script>
+                        var xValues3 = ["Resolved", "Pending"];
+                        var yValues3 = [75, 25];
+                        var barColors3 = [
+                            "#ffa64d",
+                            "SlateBlue",
+                            ];
+                            
+                            //fetch values from api issues-data
+                            $.ajax({
+                                    url: "http://localhost:8080/api/v1/report/issues-data",
+                                    type: "GET",
+                                    headers: {
+                                        "Authorization": getTokenCookie(),
+                                        "Content-Type": "application/json"
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        yValues3 = data;
+            
+
+                                    Chart.pluginService.register({
+                                    beforeDraw: function(chart) {
+                                        var config = chart.config;
+                                                if (config.customOptions && config.customOptions.targetChart === 'myChart3') {
+                                         var width = chart.chart.width;
+                                            var height = chart.chart.height;
+                                            ctx = chart.chart.ctx;
+                                    
+                                        ctx.restore();
+                                        var fontSize = (height / 114).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                        ctx.textBaseline = "middle";
+                                    
+                                        var text = data[0]+data[1];
+                                        var textX = Math.round((width - ctx.measureText(text).width) / 2);
+                                        var textY = (height / 2)-35;
+                                    
+                                    
+                                    
+                                        ctx.fillText(text, textX, textY);
+                                    
+                                        fontSize = (height / 300).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                    
+                                        var text2 = "Issues";
+                                        var textX2 = Math.round((width - ctx.measureText(text2).width) / 2);
+                                        var textY2 = (height / 2);
+                                        ctx.fillText(text2, textX2, textY2);
+                                        ctx.save();
+                                        }
+                                    }
+                                    });
+                                    
+                                        new Chart("myChart3", {
+                                            type: "doughnut",
+                                            data: {
+                                                labels: xValues3,
+                                                datasets: [{
+                                                backgroundColor: barColors3,
+                                                hoverBackgroundColor: ["#ff8c1a","#4e3cc3"],
+                                                data: yValues3
+                                                }]
+                                            },
+                                            customOptions: {
+                                                        targetChart: 'myChart3'
+                                                    },
+                                            options: {
+                                                legend:{
+                                                display:true,
+                                                position:'bottom'
+                                                },
+                                                title: {
+                                                display: true,
+                                                text: "",
+                                                position:'bottom'
+                                                }
+                                            }
+                                            });
+                                    },
+                                    error: function () {
+                                        Chart.pluginService.register({
+                                    beforeDraw: function(chart) {
+                                        var config = chart.config;
+                                                if (config.customOptions && config.customOptions.targetChart === 'myChart3') {
+                                        var width = chart.chart.width;
+                                        var height = chart.chart.height;
+                                        var ctx = chart.chart.ctx;
+                                    
+                                        ctx.restore();
+                                        var fontSize = (height / 114).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                        ctx.textBaseline = "middle";
+                                    
+                                        var text = 0;
+                                        var textX = Math.round((width - ctx.measureText(text).width) / 2);
+                                        var textY = (height / 2)-35;
+                                    
+                                    
+                                    
+                                        ctx.fillText(text, textX, textY);
+                                    
+                                        fontSize = (height / 300).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                    
+                                        var text2 = "Issues";
+                                        var textX2 = Math.round((width - ctx.measureText(text2).width) / 2);
+                                        var textY2 = (height / 2)+10;
+                                        ctx.fillText(text2, textX2, textY2);
+                                        ctx.save();
+                                        }
+                                    }
+                                    });
+
+                                        new Chart("myChart3", {
+                                            type: "doughnut",
+                                            data: {
+                                                labels: xValues3,
+                                                datasets: [{
+                                                backgroundColor: barColors3,
+                                                data: yValues3
+                                                }]
+                                            },
+                                            customOptions: {
+                                                        targetChart: 'myChart3'
+                                                    },
+                                            options: {
+                                                legend:{
+                                                display:true,
+                                                position:'bottom'
+                                                },
+                                                title: {
+                                                display: true,
+                                                text: "",
+                                                position:'bottom'
+                                                }
+                                            }
+                                            });
+                                        return createAlert("Server error. Please try again!", "failure");//alert("Server error! Please try again!")
+                                    }
+                                });
+                            
+                            
+                            
+                            
+                            </script>
+
+                                <script>
+                                    var xValues4 = ["Availed", "Cancelled"];
+                                    var yValues4 = [1,0];
+                                    var barColors4 = [
+                                    "Dodgerblue",
+                                    "Tomato",
+                                    ];
+                                    
+                                    //fetch values from api PastBookings-data
+                            $.ajax({
+                                    url: "http://localhost:8080/api/v1/report/PastBookings-data",
+                                    type: "GET",
+                                    headers: {
+                                        "Authorization": getTokenCookie(),
+                                        "Content-Type": "application/json"
+                                    },
+                                    success: function (data) {
+                                        yValues4 = data;
+                                        Chart.pluginService.register({
+                                    beforeDraw: function(chart) {
+                                        var config2 = chart.config;
+                                         if (config2.customOptions && config2.customOptions.targetChart === 'myChart4') {
+                                          
+                                             var width = chart.chart.width;
+                                            var height = chart.chart.height;
+                                            var ctx = chart.chart.ctx;
+                                    
+                                        ctx.restore();
+                                        var fontSize = (height / 114).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                        ctx.textBaseline = "middle";
+                                    
+                                        var myChart4Text = data[0]+data[1];
+                                        var  myChart4TextX = Math.round((width - ctx.measureText(myChart4Text).width) / 2);
+                                        var myChart4TextY = (height / 2)-35;
+                                    
+                                    
+                                    
+                                        ctx.fillText(myChart4Text, myChart4TextX, myChart4TextY);
+                                    
+                                        fontSize = (height / 300).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                    
+                                        var myChart4Text2 = "Past";
+                                        myChart4TextX2 = Math.round((width - ctx.measureText(myChart4Text2).width) / 2);
+                                        myChart4TextY2 = (height / 2)-5;
+                                        ctx.fillText(myChart4Text2, myChart4TextX2, myChart4TextY2);
+
+                                        var myChart4Text2 = "Bookings",
+                                        myChart4TextX2 = Math.round((width - ctx.measureText(myChart4Text2).width) / 2);
+                                        myChart4TextY2 = (height / 2)+10;
+                                        ctx.fillText(myChart4Text2, myChart4TextX2, myChart4TextY2);
+                                        ctx.save();
+                                    }
+                                    }
+                                    });
+                                    
+                                    
+                                    new Chart("myChart4", {
+                                    type: "doughnut",
+                                    data: {
+                                        labels: xValues4,
+                                        datasets: [{
+                                        backgroundColor: barColors4,
+                                        hoverBackgroundColor: ["#0080ff","#ff5233"],
+                                        data: yValues4
+                                        }]
+                                    },
+                                    customOptions: {
+                                        targetChart: 'myChart4'
+                                    },
+                                    options: {
+                                        legend:{
+                                        display:true,
+                                        position:'bottom'
+                                        },
+                                        title: {
+                                        display: true,
+                                        text: "",
+                                        position:'bottom'
+                                        }
+                                    }
+                                    });
+                                   
+                                    },
+                                    error: function () {
+                                        Chart.pluginService.register({
+                                    beforeDraw: function(chart) {
+                                        var config2 = chart.config;
+                                         if (config2.customOptions && config2.customOptions.targetChart === 'myChart4') {
+                                          
+                                             var width = chart.chart.width;
+                                            var height = chart.chart.height;
+                                            var ctx = chart.chart.ctx;
+                                    
+                                        ctx.restore();
+                                        var fontSize = (height / 114).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                        ctx.textBaseline = "middle";
+                                    
+                                        var myChart4Text = "0";
+                                        var myChart4TextX = Math.round((width - ctx.measureText(myChart4Text).width) / 2);
+                                        var myChart4TextY = (height / 2)-35;
+                                    
+                                    
+                                    
+                                        ctx.fillText(myChart4Text, myChart4TextX, myChart4TextY);
+                                    
+                                        fontSize = (height / 350).toFixed(2);
+                                        ctx.font = fontSize + "em sans-serif";
+                                    
+                                        var myChart4Text2 = "Past";
+                                        var myChart4TextX2 = Math.round((width - ctx.measureText(myChart4Text2).width) / 2);
+                                        var myChart4TextY2 = (height / 2)-5;
+                                        ctx.fillText(myChart4Text2, myChart4TextX2, myChart4TextY2);
+
+                                        var myChart4Text2 = "Bookings";
+                                        var myChart4TextX2 = Math.round((width - ctx.measureText(myChart4Text2).width) / 2);
+                                        var myChart4TextY2 = (height / 2)+10;
+                                        ctx.fillText(myChart4Text2, myChart4TextX2, myChart4TextY2);
+                                        ctx.save();
+                                    }
+                                    }
+                                    });
+                                    
+                                    
+                                    new Chart("myChart4", {
+                                    type: "doughnut",
+                                    data: {
+                                        labels: xValues4,
+                                        datasets: [{
+                                        backgroundColor: barColors4,
+                                        data: yValues4
+                                        }]
+                                    },
+                                    customOptions: {
+                                        targetChart: 'myChart4'
+                                    },
+                                    options: {
+                                        legend:{
+                                        display:true,
+                                        position:'bottom'
+                                        },
+                                        title: {
+                                        display: true,
+                                        text: "",
+                                        position:'bottom'
+                                        }
+                                    }
+                                    });
+                                   
+                                        return createAlert("Server error. Please try again!", "failure");//alert("Server error! Please try again!")
+                                    }
+                                });
+
+                                    
+                                    </script>
+
+                                    <script>
+                                        var xValues5 = ["Confirmed", "Cancelled","Waiting"];
+                                        var yValues5 = [65,25,10];
+                                        var barColors5 = [
+                                        "MediumSeaGreen",
+                                        "#ff6666",
+                                        "Gray"
+                                        ];
+                                        
+                                        //fetch values from api PastBookings-data
+                                        $.ajax({
+                                                url: "http://localhost:8080/api/v1/report/currentBookings-data",
+                                                type: "GET",
+                                                headers: {
+                                                    "Authorization": getTokenCookie(),
+                                                    "Content-Type": "application/json"
+                                                },
+                                                success: function (data) {
+                                                    yValues5 = data;
+                                                    Chart.pluginService.register({
+                                        beforeDraw: function(chart) {
+                                            var config2 = chart.config;
+                                            if (config2.customOptions && config2.customOptions.targetChart === 'myChart5') {
+                                            
+                                                var width = chart.chart.width;
+                                                var height = chart.chart.height;
+                                                var ctx = chart.chart.ctx;
+                                        
+                                            ctx.restore();
+                                            var fontSize = (height / 114).toFixed(2);
+                                            ctx.font = fontSize + "em sans-serif";
+                                            ctx.textBaseline = "middle";
+                                        
+                                            var myChart5Text = data[0]+data[1]+data[2];
+                                            var myChart5TextX = Math.round((width - ctx.measureText(myChart5Text).width) / 2);
+                                            var myChart5TextY = (height / 2)-35;
+                                        
+                                        
+                                        
+                                            ctx.fillText(myChart5Text, myChart5TextX, myChart5TextY);
+                                        
+                                            fontSize = (height / 300).toFixed(2);
+                                            ctx.font = fontSize + "em sans-serif";
+                                        
+                                            var myChart5Text2 = "Current";
+                                            var myChart5TextX2 = Math.round((width - ctx.measureText(myChart5Text2).width) / 2);
+                                            var myChart5TextY2 = (height / 2)-5;
+                                            ctx.fillText(myChart5Text2, myChart5TextX2, myChart5TextY2);
+
+                                            var myChart5Text3 = "Bookings";
+                                            var myChart5TextX3 = Math.round((width - ctx.measureText(myChart5Text3).width) / 2);
+                                            var myChart5TextY3 = (height / 2)+10;
+                                            ctx.fillText(myChart5Text3, myChart5TextX3, myChart5TextY3);
+                                            ctx.save();
+                                        }
+                                        }
+                                        });
+                                        
+                                        
+                                        new Chart("myChart5", {
+                                        type: "doughnut",
+                                        data: {
+                                            labels: xValues5,
+                                            datasets: [{
+                                            backgroundColor: barColors5,
+                                            hoverBackgroundColor: ["#39ac6d","#ff3333","#737373"],
+                                            data: yValues5
+                                            }]
+                                        },
+                                        customOptions: {
+                                            targetChart: 'myChart5'
+                                        },
+                                        options: {
+                                            legend:{
+                                            display:true,
+                                            position:'bottom'
+                                            },
+                                            title: {
+                                            display: true,
+                                            text: "",
+                                            position:'bottom'
+                                            }
+                                        }
+                                        });
+                                            
+                                                },
+                                                error: function () {
+                                                    Chart.pluginService.register({
+                                        beforeDraw: function(chart) {
+                                            var config2 = chart.config;
+                                            if (config2.customOptions && config2.customOptions.targetChart === 'myChart5') {
+                                            
+                                                var width = chart.chart.width;
+                                                var height = chart.chart.height;
+                                                var ctx = chart.chart.ctx;
+                                        
+                                            ctx.restore();
+                                            var fontSize = (height / 114).toFixed(2);
+                                            ctx.font = fontSize + "em sans-serif";
+                                            ctx.textBaseline = "middle";
+                                        
+                                            var myChart5Text = "100";
+                                            var myChart5TextX = Math.round((width - ctx.measureText(myChart5Text).width) / 2);
+                                            var myChart5TextY = (height / 2)-35;
+                                        
+                                        
+                                        
+                                            ctx.fillText(myChart5Text, myChart5TextX, myChart5TextY);
+                                        
+                                            fontSize = (height / 300).toFixed(2);
+                                            ctx.font = fontSize + "em sans-serif";
+                                        
+                                            var myChart5Text2 = "Current";
+                                            var myChart5TextX2 = Math.round((width - ctx.measureText(myChart5Text2).width) / 2);
+                                            var myChart5TextY2 = (height / 2)-5;
+                                            ctx.fillText(myChart5Text2, myChart5TextX2, myChart5TextY2);
+
+                                            var myChart5Text3 = "Bookings";
+                                            var myChart5TextX3 = Math.round((width - ctx.measureText(myChart5Text3).width) / 2);
+                                            var myChart5TextY3 = (height / 2)+10;
+                                            ctx.fillText(myChart5Text3, myChart5TextX3, myChart5TextY3);
+                                            ctx.save();
+                                        }
+                                        }
+                                        });
+                                        
+                                        
+                                        new Chart("myChart5", {
+                                        type: "doughnut",
+                                        data: {
+                                            labels: xValues5,
+                                            datasets: [{
+                                            backgroundColor: barColors5,
+                                            data: yValues5
+                                            }]
+                                        },
+                                        customOptions: {
+                                            targetChart: 'myChart5'
+                                        },
+                                        options: {
+                                            legend:{
+                                            display:true,
+                                            position:'bottom'
+                                            },
+                                            title: {
+                                            display: true,
+                                            text: "",
+                                            position:'bottom'
+                                            }
+                                        }
+                                        });
+                                                    return createAlert("Server error. Please try again!", "failure");//alert("Server error! Please try again!")
+                                                }
+                                            });
+
+                                       
+                                        
+                                        </script>
+                    <!--fifth div-->
+
+                    <div id="fifthdiv" style="display:none;">
+                        <form>
+                            <h1>Add a destination</h1>
+
+                            <input type="text" id="dest-name" name="name" placeholder="Enter destination name">
+                            <div id="results"></div>
+                            <script>
+                                const places = [
+                                    {
+                                        "name": "Ecospace",
+                                        "latitude": 22.576951,
+                                        "longitude": 88.433728
+                                    },
+                                    {
+                                        "name": "SDF more",
+                                        "latitude": 22.577187,
+                                        "longitude": 88.428692
+                                    },
+                                    {
+                                        "name": "Unitech",
+                                        "latitude": 22.577587,
+                                        "longitude": 88.433714
+                                    },
+                                    {
+                                        "name": "SDF Building",
+                                        "latitude": 22.577858,
+                                        "longitude": 88.429189
+                                    },
+                                    {
+                                        "name": "Wipro more",
+                                        "latitude": 22.577601,
+                                        "longitude": 88.429674
+                                    },
+                                    {
+                                        "name": "College More",
+                                        "latitude": 22.579856,
+                                        "longitude": 88.428441
+                                    },
+                                    {
+                                        "name": "Webel More",
+                                        "latitude": 22.576576,
+                                        "longitude": 88.426511
+                                    },
+                                    {
+                                        "name": "Technopolis",
+                                        "latitude": 22.580815,
+                                        "longitude": 88.428056
+                                    },
+                                    {
+                                        "name": "RDB",
+                                        "latitude": 22.580548,
+                                        "longitude": 88.433063
+                                    },
+                                    {
+                                        "name": "Tata Medical Centre",
+                                        "latitude": 22.579414,
+                                        "longitude": 88.436316
+                                    },
+                                    {
+                                        "name": "Eco Station",
+                                        "latitude": 22.575468,
+                                        "longitude": 88.432514
+                                    },
+                                    {
+                                        "name": "Infinity",
+                                        "latitude": 22.580441,
+                                        "longitude": 88.427693
+                                    },
+                                    {
+                                        "name": "SDF 2",
+                                        "latitude": 22.576925,
+                                        "longitude": 88.430089
+                                    },
+                                    {
+                                        "name": "Techno India",
+                                        "latitude": 22.582547,
+                                        "longitude": 88.422847
+                                    },
+                                    {
+                                        "name": "Wipro Gate 2",
+                                        "latitude": 22.575606,
+                                        "longitude": 88.428674
+                                    },
+                                    {
+                                        "name": "Aloft",
+                                        "latitude": 22.584686,
+                                        "longitude": 88.423684
+                                    },
+                                    {
+                                        "name": "Idea Building",
+                                        "latitude": 22.576154,
+                                        "longitude": 88.426277
+                                    },
+                                    {
+                                        "name": "Capgemini",
+                                        "latitude": 22.581013,
+                                        "longitude": 88.427693
+                                    },
+                                    {
+                                        "name": "SDF 3",
+                                        "latitude": 22.574778,
+                                        "longitude": 88.427151
+                                    },
+                                    {
+                                        "name": "SDF 4",
+                                        "latitude": 22.575109,
+                                        "longitude": 88.429193
+                                    },
+                                    {
+                                        "name": "Charnock Hospital",
+                                        "latitude": 22.586247,
+                                        "longitude": 88.427778
+                                    },
+                                    {
+                                        "name": "Ecospace Gate 2",
+                                        "latitude": 22.577304,
+                                        "longitude": 88.431006
+                                    },
+                                    {
+                                        "name": "Tollygunge Tram Depot",
+                                        "latitude": 22.5085,
+                                        "longitude": 88.3358
+                                    },
+                                    {
+                                        "name": "Esplanade",
+                                        "latitude": 22.5641,
+                                        "longitude": 88.3488
+                                    },
+                                    {
+                                        "name": "Park Circus Maidan",
+                                        "latitude": 22.5415,
+                                        "longitude": 88.3957
+                                    },
+                                    {
+                                        "name": "Garia Bus Stand",
+                                        "latitude": 22.4767,
+                                        "longitude": 88.3942
+                                    },
+                                    {
+                                        "name": "Shyambazar",
+                                        "latitude": 22.6024,
+                                        "longitude": 88.3749
+                                    },
+                                    {
+                                        "name": "Ruby Crossing",
+                                        "latitude": 22.5113,
+                                        "longitude": 88.3939
+                                    },
+                                    {
+                                        "name": "Kudghat Bus Stand",
+                                        "latitude": 22.4981,
+                                        "longitude": 88.3244
+                                    },
+                                    {
+                                        "name": "Barasat Bus Stand",
+                                        "latitude": 22.7256,
+                                        "longitude": 88.4798
+                                    },
+
+                                ];
+
+                                const input = document.getElementById("dest-name");
+
+
+                                function searchPlaces(term) {
+
+                                    return places.filter(place => place.name.toLowerCase().includes(term.toLowerCase()));
+                                }
+
+                            </script>
+
+                            <!-- <input type="number" id="dest-latitude-input" name="latitude" min="-90" max="90" step="any" placeholder="Enter latitude">
+                                        
+                                        
+                                        <input type="number" id="dest-longitude-input" name="longitude" min="-180" max="180" step="any" placeholder="Enter longitude"><br> -->
+
+                            <script>
+                                function displayResults(places) {
+                                    const results = document.getElementById("results");
+                                    results.innerHTML = ""; // clear previous results
+                                    if (places.length > 0) {
+                                        const ul = document.createElement("ul");
+                                        ul.classList.add("results-list"); // add a class for styling
+                                        places.forEach((place) => {
+                                            const li = document.createElement("li");
+                                            li.textContent = place.name;
+                                            li.classList.add("results-item"); // add a class for styling
+                                            li.addEventListener("click", () => {
+                                                console.log(
+                                                    `Name: ${place.name}, Latitude: ${place.latitude}, Longitude: ${place.longitude}`
+                                                );
+                                                const placeInput = document.getElementById("dest-name");
+                                                const latitudeInput = document.getElementById("dest-latitude-input");
+                                                const longitudeInput = document.getElementById("dest-longitude-input");
+                                                results.innerHTML = "";
+                                                placeInput.value = place.name;
+                                                latitudeInput.value = place.latitude;
+                                                longitudeInput.value = place.longitude;
+                                            });
+                                            ul.appendChild(li);
+                                        });
+                                        results.appendChild(ul);
+                                    } else {
+                                        const ul = document.createElement("ul");
+                                        ul.classList.add("results-list"); // add a class for styling
+                                        const li = document.createElement("li");
+                                        li.textContent = "No matching places found.";
+                                        li.classList.add("results-item");
+                                        ul.appendChild(li);
+                                        results.appendChild(ul);
+                                    }
+                                }
+
+
+                                input.addEventListener("input", () => {
+
+                                    const term = input.value.trim();
+                                    console.log(term == "");
+                                    if (term == "") document.getElementById("results").innerHTML = "";
+                                    if (term != "") {
+                                        const matchingPlaces = searchPlaces(term);
+                                        displayResults(matchingPlaces);
+                                    }
+                                });
+                            </script>
+
+                            <input type="number" id="dest-latitude-input" name="latitude" min="-90" max="90" step="any"
+                                placeholder="Enter latitude">
+
+
+                            <input type="number" id="dest-longitude-input" name="longitude" min="-180" max="180"
+                                step="any" placeholder="Enter longitude"><br>
+
+
+                            <input type="submit" onclick="addDestination(event)" value="+ Add Destination">
+
+                            <h1>Search/Edit destination</h1>
+
+                            <input type="text" id="dest-search-name" placeholder="Enter destination name">
+                        </form>
+                        <button class="search-destination" onclick="on3(event)"> <img class="confirm-cancel-icon"
+                                src="./public/icons8-search.svg" alt=""> Search</button>
+                    </div>
+
+                    <!--sixth div-->
+                    <!-- <div id="sixthdiv" style = "display: none;">
+                                    <h1 class="issue-main-heading">Manage Issues</h1>
+                                    <div class = "issue-div">
+                                        <div class = "issue-heading">Issue 1</div>
+                                        <div class = "issue-user">aaditya@gmail.com <p class = "issue-date">Created at: 09:03:2023</p></div>
+                                        <div class = "issue-text">paosidfjpoaisjdf poajisp foajisp dfojapsfjdpaosdijf paojidf 
+                                            apojisdf poajsdf poasjidf paosjidfp oajsfd poa adsfadsf paosidfjpoaisjdf poajisp foajisp dfojapsfjdpaosdijf paojidf 
+                                            apojisdf poajsdf poasjidf paasdfa fsadf asdf asdf asdf asdf asdf asdff da fda fosjidfp oajsfd poa adsfadsf
+                                        </div>
+                                        <br/>
+                                        <div class = "issue-resolve">Resolve</div>
+                                    </div>
+                                    <div class = "issue-div">
+                                        <div class = "issue-heading">Issue 1</div>
+                                        <div class = "issue-user">aaditya@gmail.com <p class = "issue-date">Created at: 09:03:2023</p></div>
+                                        <div class = "issue-text">paosidfjpoaisjdf poajisp foajisp dfojapsfjdpaosdijf paojidf 
+                                            apojisdf poajsdf poasjidf paosjidfp oajsfd poa adsfadsf paosidfjpoaisjdf poajisp foajisp dfojapsfjdpaosdijf paojidf 
+                                            apojisdf poajsdf poasjidf paasdfa fsadf asdf asdf asdf asdf asdf asdff da fda fosjidfp oajsfd poa adsfadsf
+                                        </div>
+                                        <br/>
+                                        <div class = "issue-resolve">Resolve</div>
+                                    </div>
+                                </div> -->
+
+
+                    <div id="sixthdiv" style="display:none" class="issue-manage">
+                        
+                        <div>
+                            <h1 class="issue-main-heading">Manage Issues</h1>
+                            
+                            <select name="issueStatus" id="issueStatus" onchange="getUnResolvedIssues()">
+                                <option value="unresolved">Unresolved</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+
+                            <input type="text" id="search-issues-admin" placeholder="Search Issues By Employee's Email">
+                            <button id="search-issue-button" onclick="searchIssues(event)">Search</button>
+                            <p style="margin-left:10%;color: goldenrod;" id="admin_issue_count">Total results: 0 </p>
+    
+                        </div>
+
+                        <div id="issue-container"></div>
+
+                        <!-- <h1 class="issue-main-heading">Manage Issusaes</h1>
+                        <input type="text" id="search-issues-admin" placeholder="Search Issues By Employee's Email">
+                        <button id="search-issue-button" onclick="searchIssues(event)">Search</button>
+                        <p style="margin-left:10%;color: goldenrod;" id="admin_issue_count">Total results: 0 </p>
+
+                        <div class="issue-manage-content"></div> -->
+                       
+                    </div>
+
+
+                    <!--seventh div-->
+                    <div id="seventhdiv" style="display:none">
+                        <div>
+                            <div class="ticket-main-heading">Search Tickets</div>
+                            <div class="my-booking-div-text">Filter By Status</div>
+                            <select name="status" id="status">
+                                <option value="CONFIRMED">Confirmed</option>
+                                <option value="WAITING">Waiting</option>
+                                <option value="AVAILED">Availed</option>
+                                <option value="CANCELLED">Cancelled</option>
+                            </select>
+                        </div>
+
+                        <input type="text" id="search-tickets-admin" placeholder="Enter Employee's Email">
+                        <button id="search-ticket-button" onclick="searchTickets(event)">Search</button>
+                        <p style="margin-left:10%;color: goldenrod;" id="admin_ticket_count">Total results: 0 </p>
+                        <div class="admin-ticket-header">
+                            <div class="admin-ticket-value">Date</div>
+                            <div class="admin-ticket-value">Source</div>
+                            <div class="admin-ticket-value">Destination</div>
+                            <div class="admin-ticket-value">Bus number</div>
+                            <div class="admin-ticket-value">Status</div>
+                            <div class="admin-ticket-value">Cancel</div>
+                        </div>
+                        <div class="admin-ticket-content"></div>
+                        <div class="admin-ticket-pagination"></div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+        <!-- Footer -->
+        <!-- <div class="footer">
+
+            <div class="footer-element">
+                NRI includes a copyright notice that reserves all rights for itself,
+                and has protected material from 1995 to 2021:
+            </div>
+            <div class="footer-element-smallerscreen">
+                All rights reserved by NRI
+            </div>
+        </div> -->
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" style="padding: 1%;">
+
+        <div class="footer-element">
+            NRI includes a copyright notice that reserves all rights for itself,
+            and has protected material
+        </div>
+        <div class="footer-element-smallerscreen">
+            All rights reserved by NRI
+        </div>
+    </div>
+
+    </div>
+    <!-- 
+        *****   OverLays   ****** 
+    -->
+
+    <!-- Employee Search Overlay -->
+
+    <div class="search-overlay">
+        <div class="search-div">
+
+            <div class="search-overlay-main-div">
+                <div class="close-button" onclick="off()">x</div>
+                <div class="cancel-text">
+                    <form style="text-align: left;margin: auto;">
+                        <p class="overlay-label">Name</p>
+                        <input class="overlay-input" type="text" id="employee-name" name="name" placeholder="Name"><br>
+                        <p class="overlay-label">Email</p>
+                        <input class="overlay-input" type="text" id="employee-email" name="email"
+                            placeholder="Email"><br>
+                        <p class="overlay-label">Password</p>
+                        <input class="overlay-input" type="text" id="employee-password" name="employee-password"
+                            placeholder="Update password"><br>
+                        <p class="overlay-label">Employee id</p>
+                        <input class="overlay-input" type="text" id="employee-id" placeholder="Employee ID"><br>
+
+                        <input type="text" id="emp-inp-id" style="display: none;">
+                    </form>
+                </div>
+                <div class="confirm-cancel-buttons">
+                    <button class="confirm-button" onclick="updateEmployee(event)"> <img class="confirm-cancel-icon"
+                            src="./public/arrow-right-circle-fill.svg" alt=""> Save</button>
+                    <button class="cancel-button" onclick="deleteEmployee(event)">Delete</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Employee Search Overlay Ends Here-->
+
+    <!-- Bus Search Overlay -->
+
+    <div class="bus-overlay">
+        <div class="search-div">
+
+            <div class="search-overlay-main-div">
+                <div class="close-button" onclick="off2()">x</div>
+                <div class="cancel-text">
+                    <form style="text-align: left;margin: auto;">
+                        <p class="overlay-label">Bus number</p>
+                        <input class="overlay-input" type="text" id="bus-number-o" name="number"
+                            placeholder="Bus Number">
+                        <p class="overlay-label">Bus name</p>
+                        <input class="overlay-input" type="text" id="bus-name-o" name="name" placeholder="Bus Name">
+                        <p class="overlay-label">Total seats</p>
+                        <input class="overlay-input" type="text" id="bus-seats-o" name="seats"
+                            placeholder="Total Seats">
+                        <input class="overlay-input" type="text" id="bus-id-o" style="display: none;" />
+
+                    </form>
+                </div>
+                <div class="confirm-cancel-buttons">
+                    <button class="confirm-button" onclick="updateBus(event)"> <img class="search-cancel-icon"
+                            src="./public/arrow-right-circle-fill.svg" alt=""> Save</button>
+                    <button class="cancel-button" onclick="deleteBus(event)">Delete</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bus Search Overlay Ends Here-->
+
+    <!-- Destination Search Overlay -->
+
+    <div class="destination-overlay">
+        <div class="search-div">
+
+            <div class="search-overlay-main-div">
+                <div class="close-button" onclick="off3()">x</div>
+                <div class="cancel-text">
+
+                    <form style="text-align: left;margin: auto;">
+                        <p class="overlay-label">Destinatino name</p>
+                        <input class="overlay-input" type="text" id="dest-edit-name" name="name"
+                            placeholder="Destination Name">
+                        <p class="overlay-label">Latitude</p>
+                        <input class="overlay-input" type="number" id="dest-edit-latitude-input" name="latitude"
+                            min="-90" max="90" step="any" placeholder="Enter latitude">
+                        <p class="overlay-label">Longitude</p>
+                        <input class="overlay-input" type="number" id="dest-edit-longitude-input" name="longitude"
+                            min="-180" max="180" step="any" placeholder="Enter longitude"><br>
+                        <input class="overlay-input" type="number" id="dest-edit-id" name="id"
+                            style="display: none;"></input>
+                    </form>
+                </div>
+                <div class="confirm-cancel-buttons">
+                    <button class="confirm-button" onclick="updateDestination(event)"> <img class="search-cancel-icon"
+                            src="./public/arrow-right-circle-fill.svg" alt=""> Save</button>
+                    <button class="cancel-button" onclick="deleteDestination(event)">Delete</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Destination Search Overlay Ends Here-->
+
+    <!--Route search overlay-->
+    <div class="route-overlay">
+        <div class="search-div">
+
+            <div class="search-overlay-main-div-routes">
+                <div class="close-button" onclick="off4()">x</div>
+                <div class="cancel-text">
+                    <form style="text-align: left;margin: auto;">
+                        <div class="add_route_field" onclick="add_route_field_edit(event)">Add destination</div>
+                            
+                               <select class="select_bus_overlay" id="select_bus_overlay" onclick="displayBusIDOverlay(event)">
+                                    <option>Select your bus</option>
+                                </select>
+                                <div class="add_field_edit" id="add_field_edit">
+
+                                </div> 
+                           
+                            
+                            <!-- <div class="route_submit" id="route_submit" onclick=" addRoute(event)"
+                                style="cursor: pointer;">SAVE</div> -->
+                    </form>
+                </div>
+                <div class="confirm-cancel-buttons" style="margin-top: 10px;margin-bottom: 10px;">
+                    <button class="confirm-button" > <img class="confirm-cancel-icon"
+                            src="./public/arrow-right-circle-fill.svg" alt=""> Save</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!--Overlay ends here-->
+
+
+    <script src="./admin_homepage.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+
+
+    </script>
+</body>
+
+</html>
